@@ -1,15 +1,15 @@
 //
-// File:    adjacentcylist.h
+// File:    adjacencylist.h
 // Author: Kaylee Hurst  
 // Purpose:
-// Implement the graph ADT using an adjacentcy list
+// Implement the graph ADT using an adjacency list
 //
 
 #include <list>     //to use the list ADT 
 #include "graph.h"      //to inherit from the graph class
 
 template <typename ValueType>
-class AdjacentcyList
+class AdjacencyList
 {
     private: 
 

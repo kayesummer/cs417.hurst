@@ -1,14 +1,14 @@
 //
-// File:    adjacentcymatrix.h
+// File:    adjacencymatrix.h
 // Author: Kaylee Hurst  
 // Purpose:
-// Implement the graph ADT using an adjacentcy matrix
+// Implement the graph ADT using an adjacency matrix
 //
 
 #include "graph.h"  //to inherit from the graph class
 
 template <typename ValueType>
-class AdjacentcyMatrix
+class AdjacencyMatrix
 {
     private: 
 
