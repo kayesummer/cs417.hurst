@@ -10,7 +10,7 @@
 #include "graph.h"      //to inherit from the graph class
 
 template <typename ValueType>
-class AdjacencyList
+class AdjacencyList : public Graph<ValueType>
 {
     private: 
 
