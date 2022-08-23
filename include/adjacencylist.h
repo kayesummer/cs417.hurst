@@ -5,6 +5,7 @@
 // Implement the graph ADT using an adjacency list
 //
 
+#include <vector>   //to use the vector ADT
 #include <list>     //to use the list ADT 
 #include "graph.h"      //to inherit from the graph class
 
