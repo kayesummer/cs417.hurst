@@ -18,7 +18,7 @@ class AdjacencyMatrix
     vector<ValueType> neighbors(ValueType x); // Return a vector of neighbor nodes
     void addEdge(ValueType source, ValueType dest); //add an edge from source, to dest
                                                     // add dest if it isn't already in graph
-    void addNode(ValueType x); Add x to graph
+    void addNode(ValueType x); //Add x to graph
     void deleteEdge(ValueType source, ValueType dest);
     void deleteNode(ValueType node);
 };
