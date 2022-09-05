@@ -15,6 +15,13 @@ class AdjacencyMatrix : public Graph<ValueType>
     private: 
 
     public: 
+    //constructors/destructor
+    AdjacencyMatrix() : Graph<ValueType>() {};
+
+    AdjacencyMatrix(parameter) : Graph<ValueType> ()
+    {
+
+    }
     // Assume that the class is templated by the type "ValueType"
     virtual bool adjacent(ValueType x, ValueType y) // is there a node from x to y
     {
@@ -38,6 +45,6 @@ class AdjacencyMatrix : public Graph<ValueType>
     }
     virtual void deleteNode(ValueType node)
     {
-        
+
     }
 };

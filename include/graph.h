@@ -14,7 +14,7 @@ class Graph
     public:
 
         Graph() {};
-        Graph(vector<valueType> nodes, vector<pair<valueType,valueType>> edges) {};
+        Graph(vector<valueType> nodes, vector<std::pair<valueType,valueType>> edges) {};
         virtual ~Graph() {};
 
         virtual bool adjacent(ValueType x, ValueType y) = 0; 
