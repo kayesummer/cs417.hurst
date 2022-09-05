@@ -12,7 +12,7 @@ template <typename ValueType>
 class Graph
 {
     public:
-
+        //constructors and destructor
         Graph() {};
         Graph(vector<valueType> nodes, vector<std::pair<valueType,valueType>> edges) {};
         virtual ~Graph() {};
