@@ -5,6 +5,7 @@
 // Implement a pure virtual base class for a graph to be inherited by adjacencylist.h and adjacencymatrix.h
 //
 
+#pragma once
 #include <vector>
 
 template <typename ValueType> 
@@ -12,7 +13,9 @@ class Graph
 {
     public:
 
-        //add constructor/destructor hehe
+        Graph() {};
+        Graph(vector<valueType> nodes, vector<pair<valueType,valueType>> edges) {};
+        virtual ~Graph() {};
 
         virtual bool adjacent(ValueType x, ValueType y) = 0; 
         virtual vector<ValueType> neighbors(ValueType x) = 0; 

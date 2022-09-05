@@ -5,6 +5,8 @@
 // Implement the graph ADT using an adjacency matrix
 //
 
+#pragma once
+#include <vector>
 #include "graph.h"  //to inherit from the graph class
 
 template <typename ValueType>
