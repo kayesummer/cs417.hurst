@@ -3,6 +3,7 @@
 // Author: Kaylee Hurst  
 // Purpose:
 // Given a directed graph, this program will check to see if a user-specified path from that graph contains a cycle
+//
 // plz have mercy on me i beg of you
 //
 
@@ -15,7 +16,7 @@ using namespace std;
 
 //function prototypes
 bool readData();
-bool doesItCycle(parameters);
+bool doesItCycle();
 
 //global variables
 AdjacencyList<int> graphTest;
