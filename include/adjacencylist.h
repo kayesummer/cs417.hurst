@@ -59,7 +59,7 @@ class AdjacencyList : public Graph<ValueType>
         typename Edges::const_iterator end = edges.end();
         auto pos = std::find_if(begin, end, [&](std::pair<ValueType, ValueType> const &b)
         {
-            return b.first == searchEdge->//something here
+            return b.first == searchEdge->first;
         }
         );
         return (pos != end);

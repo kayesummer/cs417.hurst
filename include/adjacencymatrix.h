@@ -1,26 +1,24 @@
 //
 // File:    adjacencyMatrix.h
-// Author: Adam Lewis
-// **Kaylee Hurst does not own the rights**
-// Copyright (c) 2014 Adam Lewis. All rights reserved
+// Author: Kaylee Hurst
 // Purpose:
-// Implement the graph ADT using an adjacency list
+// Implement the graph ADT using an adjacency matrix
+// used code from this website: https://algodaily.com/lessons/implementing-graphs-edge-list-adjacency-list-adjacency-matrix/java
 //
+// pretend all of this is correct :/
 
 #pragma once 
 #include <vector>  
-#include <map>
-#include <deque>
-#include <algorithm> 
-#include <list>     
+#include <algorithm>      
 #include "graph.h"      //to inherit from the graph class
 
 template <typename ValueType>
 class AdjacencyMatrix : public Graph<ValueType>
 {
     private: 
-        using Edges = list<std::pair<ValueType,ValueType>>;
-        map<ValueType,Edges> vertexMap;
+        ValueType matrix[][];
+        int numVertices;
+        //vector here
 
     public: 
     //constructors/destructor
@@ -28,25 +26,20 @@ class AdjacencyMatrix : public Graph<ValueType>
 
     AdjacencyMatrix(const AdjacencyMatrix& other) : Graph<ValueType> ()
     {
-        vertexMap = other->vertexMap;
+        numVertices = other;
+        matrix = new matrixptr[numVertices][numVertices];
     }
 
-    //Add the nodes in the list to graph
-    AdjacencyMatrix(vector<ValueType> newNodes, vector<pair<ValueType,ValueType>> newEdges) : Graph<ValueType> (newNodes, newEdges)
+    ~AdjacencyMatrix() 
     {
-        for (auto it = newNodes.begin(); it < newNodes.end(); ++it)
-        {
-            ValueType node = *it; 
-            vertexMap[node].pushback(newEdges);
-        }
+        delete[][] matrixptr;
+        matrixptr = nullptr;
     }
-
-    ~AdjacencyMatrix() {};
 
     //overload assignment operator
     AdjacencyMatrix& operator= (const AdjacencyMatrix &source)
     {
-        vertexMap = source->vertexMap;
+        numVertices = source;
         return *this;
     }
     
@@ -79,10 +72,8 @@ class AdjacencyMatrix : public Graph<ValueType>
 
     virtual void addEdge(ValueType source, ValueType dest) //add an edge from source, to dest add dest if it isn't already in graph
     {
-        std::pair<ValueType,ValueType> forwardEdge = std::make_pair(source,dest);
-        std::pair<ValueType,ValueType> backwardEdge = std::make_pair(dest,source);
-        vertexMap[source].push_back(forwardEdge);
-        vertexMap[dest].push_back(backwardEdge);
+        matrix[source][dest] = true;
+        matrix[dest][source] = true;
     }
 
     virtual void addNode(ValueType x) //Add x to graph
@@ -93,10 +84,8 @@ class AdjacencyMatrix : public Graph<ValueType>
 
     virtual void deleteEdge(ValueType source, ValueType dest)
     {
-        std::pair<ValueType,ValueType> forwardEdge = std::make_pair(source,dest);
-        std::pair<ValueType,ValueType> backwardEdge = std::make_pair(dest,source);
-        vertexMap[source].remove(forwardEdge);
-        vertexMap[dest].remove(backwardEdge);
+        matrix[source][dest] = false;
+        matrix[dest][source] = false;
     }
 
     virtual void deleteNode(ValueType node)
