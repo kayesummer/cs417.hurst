@@ -3,11 +3,13 @@
 // Author: Kaylee Hurst
 // Purpose:
 // Implement the graph ADT using an adjacency matrix
-// used code from this website: https://algodaily.com/lessons/implementing-graphs-edge-list-adjacency-list-adjacency-matrix/java
+// used code from this website: https://www.programiz.com/dsa/graph-adjacency-matrix & https://www.includehelp.com/ds/addition-and-deletion-of-nodes-and-edges-in-a-graph-using-adjacency-matrix.aspx
 //
 // pretend all of this is correct :/
+//
 
 #pragma once 
+#include <iostream>
 #include <vector>  
 #include <algorithm>      
 #include "graph.h"      //to inherit from the graph class
@@ -16,9 +18,9 @@ template <typename ValueType>
 class AdjacencyMatrix : public Graph<ValueType>
 {
     private: 
-        ValueType matrix[][];
+        ValueType** matrix;
         int numVertices;
-        //vector here
+        vector<ValueType> info;
 
     public: 
     //constructors/destructor
@@ -27,13 +29,24 @@ class AdjacencyMatrix : public Graph<ValueType>
     AdjacencyMatrix(const AdjacencyMatrix& other) : Graph<ValueType> ()
     {
         numVertices = other;
-        matrix = new matrixptr[numVertices][numVertices];
+        matrix = new ValueType*[numVertices];
+        for (int count = 0; count < numVertices; count++)
+        {
+            matrix[count] = new ValueType[numVertices];
+            for (int counter = 0; counter < numVertices; counter++)
+            {
+                matrix[count][counter] = false;
+            }
+        }
     }
 
     ~AdjacencyMatrix() 
     {
-        delete[][] matrixptr;
-        matrixptr = nullptr;
+        for (int count = 0; count < numVertices; count++)
+        {
+            delete[] matrix[count];
+        }
+        delete[] matrix;
     }
 
     //overload assignment operator
@@ -78,8 +91,12 @@ class AdjacencyMatrix : public Graph<ValueType>
 
     virtual void addNode(ValueType x) //Add x to graph
     {
-        Edges emptyEdgeList;
-        vertexMap[x] = emptyEdgeList;
+        numVertices++;  
+        for (int count = 0; count < numVertices; count++)
+        {
+            matrix[count][numVertices] = x;
+            matrix[numVertices][count] = x;
+        }
     }
 
     virtual void deleteEdge(ValueType source, ValueType dest)
@@ -90,6 +107,24 @@ class AdjacencyMatrix : public Graph<ValueType>
 
     virtual void deleteNode(ValueType node)
     {
-        vertexMap[node].remove();
+        if (numVertices == 0)
+        {
+            std::cout << "This graph is empty\n"; 
+            return;
+        }
+        if (node > numVertices)
+        {
+            std::cout << "Node not in graph\n";
+            return;
+        }
+        for (int count = 0; count < numVertices - 1; count++)
+        {
+            for (int counter = 0; counter < numVertices; counter++)
+            {
+                matrix[count][counter] = matrix[count][counter + 1];
+                matrix[counter][count] = matrix[counter + 1][count];
+            }
+        }
+        numVertices--;
     }
 };
