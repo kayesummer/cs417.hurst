@@ -3,9 +3,11 @@
 // Author: Kaylee Hurst  
 // Purpose:
 // Given a directed graph, this program will check to see if a user-specified path from that graph contains a cycle
+// plz have mercy on me i beg of you
 //
 
 #include <iostream> 
+#include <vector>
 #include "adjacencylist.h"
 #include "graph.h"
 #include <fstream>
@@ -15,16 +17,24 @@ using namespace std;
 bool readData();
 bool doesItCycle(parameters);
 
-//global variables..?
-
+//global variables
+AdjacencyList<int> graphTest;
+vector<int> cycle;
 
 int main ()
 {
+    auto length = 0;
+    auto input = 0;
     bool goodRead = readData();
     if (goodRead)
     {
-        cout << "Enter cycle: \n";
-        //cin statement..? for-loop..? 
+        cout << "How long is your cycle?\n";
+        cin >> length;
+        cout << "Enter cycle & enter 9999 when done: \n";
+        while ((cin >> input) && input != 9999)
+        {
+            cycle.pushback(input);
+        }
         bool cycles = doesItCycle();
         if (cycles)
         {
@@ -46,21 +56,24 @@ int main ()
 
 bool readData()
 {
-    bool goodRead = true;
+    auto goodRead = true;
     ifstream inFile;
     string dataFile;
+    string data;
 
     cout << "File Name: \n";
     cin >> dataFile;
 
     inFile.open(dataFile);
-    if (inFile.is_open())   //replace if statement with reading into graph**********************************************************************
+    if (inFile.is_open())  
     {
-        inFile >> tempRow.taskNumber >> tempRow.status >> tempRow.description;
-        while (!inFile.eof())
+        while (getline(inFile, data))
         {
-            taskData.push_back(tempRow);
-            inFile >> tempRow.taskNumber >> tempRow.status >> tempRow.description;
+            graphTest.addNode(data[0]);
+            for (int count = 1; count < data.length(); count++)
+            {
+                graphTest.addEdge(data[count]);
+            }
         }
         inFile.close();
     }
@@ -75,8 +88,15 @@ bool readData()
 
 bool doesItCycle()
 {
-    bool cycles = true;
+    auto cycles = true;
 
+    for (vector<int>::iterator j = cycle.begin(); j != cycle.end(); ++j)
+    {
+       if ( !graphTest.adjacent(cycle[j]) )
+       {
+            cycles = false;
+       }
+    }
 
     return cycles;
 }
