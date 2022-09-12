@@ -37,7 +37,7 @@ int main ()
         }
         else //!found
         {
-            cout << value << " is not in the tree\n";
+            cout << value << " is not in the tree.\n";
         }
     }
 
