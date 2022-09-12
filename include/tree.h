@@ -1,5 +1,5 @@
 //
-// File:    Tree.h
+// File:    tree.h
 // Author:  Adam.Lewis@athens.edu
 // Purpose:
 // Use C++ templates, STL classes and functions, and smart pointers to
