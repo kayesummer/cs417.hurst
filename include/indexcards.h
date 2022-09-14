@@ -13,13 +13,9 @@ class IndexCard
 {
     private: 
         int count = 0;
-        struct Information
-        {
-            int id; 
-            std::string keyword; 
-            std::string description;
-        };
-        std::vector<Information> indexCards;
+        std::vector<int> id;
+        std::vector<std::string> keyword; 
+        std::vector<std::string> description;
 
     public: 
     //default constructor
@@ -29,25 +25,23 @@ class IndexCard
     int enterCard(std::string word, std::string desc)
     {
         srand(0);
-        Information temp;
-        temp.id = rand();
-        temp.keyword = word;
-        temp.description = desc;
-        indexCards.push_back(temp);
+        id.push_back(rand());
+        keyword.push_back(word);
+        description.push_back(desc);
         count++;
 
-        return indexCards[count].id; //returns unique id#
+        return id[count]; //returns unique id#
     }
 
     //given unique id#, displays card information
-    int searchCards(int id)
+    int searchCards(int number)
     {
         std::vector<int>::iterator it;  
-        it = std::find(indexCards.begin(), indexCards.end(), id);  
-        if(it != indexCards.end())  
+        it = std::find(id.begin(), id.end(), number);  
+        if(it != id.end())  
         {  
-            std::cout << indexCards[it - indexCards.begin() + 1].keyword <<"\n"; 
-            std::cout << indexCards[it - indexCards.begin() + 1].description << "\n";
+            std::cout << keyword[it - id.begin() + 1] <<"\n"; 
+            std::cout << description[it - id.begin() + 1] << "\n";
         }  
         else  
             std::cout<<"Element does not exist.\n \n";  
