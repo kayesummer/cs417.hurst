@@ -25,7 +25,7 @@ class IndexCard
     int enterCard(std::string word, std::string desc)
     {
         srand(0);
-        id.push_back(rand());
+        id.push_back(rand() % 100);
         keyword.push_back(word);
         description.push_back(desc);
         count++;
@@ -40,8 +40,8 @@ class IndexCard
         it = std::find(id.begin(), id.end(), number);  
         if(it != id.end())  
         {  
-            std::cout << keyword[it - id.begin() + 1] <<"\n"; 
-            std::cout << description[it - id.begin() + 1] << "\n";
+            std::cout << keyword[it - id.begin() + 1] <<": "; 
+            std::cout << description[it - id.begin() + 1] << "\n\n";
         }  
         else 
         {
