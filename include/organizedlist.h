@@ -1,9 +1,9 @@
 //
-// File:    organizedlist.cpp
+// File:    organizedlist.h
 // Author: Kaylee Hurst  
-// Purpose:
+// Purpose: wrapper around the C++ STL list template class that  defines a  find member 
+// function that searches the list and, if it finds something, moves that entry to the front of the list.
 // 
-//
 
 #include <list>
 #include <iostream>
