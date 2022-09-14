@@ -34,7 +34,7 @@ class IndexCard
     }
 
     //given unique id#, displays card information
-    int searchCards(int number)
+    void searchCards(int number)
     {
         std::vector<int>::iterator it;  
         it = std::find(id.begin(), id.end(), number);  
@@ -43,11 +43,10 @@ class IndexCard
             std::cout << keyword[it - id.begin() + 1] <<"\n"; 
             std::cout << description[it - id.begin() + 1] << "\n";
         }  
-        else  
-            std::cout<<"Element does not exist.\n \n";  
-        return 0; 
+        else 
+        {
+            std::cout << "Element does not exist.\n \n"; 
+        }  
     }
-
-
 
 };
