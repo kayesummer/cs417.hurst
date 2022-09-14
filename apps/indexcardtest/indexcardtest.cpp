@@ -1,7 +1,7 @@
 //
 // File:    indexcardtest.cpp
 // Author: Kaylee Hurst  
-// Purpose: tests the indexcards.h class
+// Purpose: tests the indexcards.h class.
 // 
 
 #include "indexcards.h"
