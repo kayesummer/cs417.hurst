@@ -10,6 +10,9 @@
 #include <queue>
 using namespace std; 
 
+//function prototypes 
+int maxSize (int, int);
+
 
 int main ()
 {
@@ -47,17 +50,26 @@ int main ()
             cout << endl;
         }
 
-        if (firstPass.size() == 0 && businessClass.size() != 0)
+        if (firstPass.size() == 0 && businessClass.size() > 0)
         {
-            firstAgent.pop();
-            businessAgent.push(1);
-            //change processing time
+            if (firstAgent.size() == 0)
+            {
+                businessAgent.push(1);
+                //change processing times
+            }
+            if (firstAgent.size() > 0)
+            {
+                firstAgent.pop();
+                businessAgent.push(1);
+                //change processing time
+            }
+
         }
         if (firstPass.size() == 0 && businessPass.size() == 0)
         {
             if (firstAgent.size() == 0)
             {
-                businessAgent.pop();
+                businessAgent.pop();    //remove firstAgent from business line
                 economyAgent.push(1);
                 //change processing time
 
@@ -71,8 +83,18 @@ int main ()
         }
         if (businessPass.size() == 0 && firstPass.size() > 0)
         {
-            businessAgent.pop();
-            firstAgent.push(1);
+            if (businessAgent.size() == 0)
+            {
+                firstAgent.push(1);
+                //change processing time
+            }
+            if (businessAgent.size() > 0)
+            {
+                businessAgent.pop();
+                firstAgent.push(1);
+                //change processing time
+            }
+
             //change processing time
         }
         if (businessPass.size() == 0 && firstPass.size() == 0 && economyPass.size > 0)
@@ -111,6 +133,7 @@ int main ()
             }
         }
 
+
     }
 
     //compute here? 
@@ -121,4 +144,13 @@ int main ()
     cout << "Economy Class:\t" << economyAverage << "\t" << economyMax << "\t" << //wait times here
 
     return 0;
+}
+
+int maxSize (int look, int max)
+{
+    if (look > max)
+    {
+        max = look;
+    }
+    return max;
 }
