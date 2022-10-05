@@ -8,10 +8,12 @@
 #include <chrono> 
 #include <algorithm> 
 #include <queue>
+#include <string>
 using namespace std; 
 
 //function prototypes 
 int maxSize (int, int);
+void periodicPrint(string, bool);
 
 
 int main ()
@@ -23,6 +25,9 @@ int main ()
     queue<int> businessAgent;
     queue<int> economyAgent;
 
+    string first = "First";
+    string business = "Business";
+    string economy = "Economy";
     auto firstCount = 0;
     auto businessCount = 0;
     auto economyCount = 0;
@@ -35,6 +40,10 @@ int main ()
     auto fAssist = false;
     auto bAssist = false;
     auto eAssist = false;
+    auto fTotal = 0;
+    auto bTotal = 0;
+    auto eTotal = 0;
+
 
     firstAgent.push(1);
     businessAgent.push(1);
@@ -49,10 +58,9 @@ int main ()
             cout << "First Class Line: " << firstPass.size() << endl;
             cout << "Business Class Line: " << businessPass.size() << endl;
             cout << "Economy Class Line: " << economyPass.size() << endl;
-            if (firstPass.size() > 0 && businessPass.size() > 0 && economyPass.size() > 0)
-            {
-                cout << "All agents are assisting customers.\n";
-            }
+            periodicPrint(first, fAssist);
+            periodicPrint(business, bAssist);
+            periodicPrint(economy, eAssist);
 
             cout << endl;
         }
@@ -285,4 +293,16 @@ int maxSize (int look, int max)
         max = look;
     }
     return max;
+}
+
+void periodicPrint(string name, bool assist)
+{
+    if (assist)
+    {
+        cout << name << " Class Agent is assisting a customer\n";
+    }
+    if (!assist)
+    {
+        cout <<name << " Class Agent is not assisting a customer\n";
+    }
 }
