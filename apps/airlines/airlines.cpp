@@ -2,6 +2,7 @@
 // File:    airlines.cpp
 // Author: Kaylee Hurst  
 // Purpose: runs a simulation of airline queues 
+// forgive me 
 //
 
 #include <iostream> 
@@ -18,25 +19,22 @@ void periodicPrint(string, bool);
 
 int main ()
 {
-    queue<int> firstPass;
-    queue<int> businessPass;
-    queue<int> economyPass;
-    queue<int> firstAgent;
-    queue<int> businessAgent;
-    queue<int> economyAgent;
+    queue<int> fPass;
+    queue<int> bPass;
+    queue<int> ePass;
+    queue<int> fAgent;
+    queue<int> bAgent;
+    queue<int> eAgent;
 
     string first = "First";
     string business = "Business";
     string economy = "Economy";
-    auto firstCount = 0;
-    auto businessCount = 0;
-    auto economyCount = 0;
-    auto firstMax = 0;
-    auto businessMax = 0;
-    auto economyMax = 0;
-    auto firstAverage = 0;
-    auto businessAverage = 0;
-    auto economyAverage = 0;
+    auto fMax = 0;
+    auto bMax = 0;
+    auto eMax = 0;
+    auto fAverage = 0;
+    auto bAverage = 0;
+    auto eAverage = 0;
     auto fAssist = false;
     auto bAssist = false;
     auto eAssist = false;
@@ -49,21 +47,24 @@ int main ()
     auto fservice = 0;
     auto bservice = 0;
     auto eservice = 0;
+    auto fwait = 0;
+    auto bwait = 0;
+    auto ewait = 0;
 
 
-    firstAgent.push(1);
-    businessAgent.push(1);
-    economyAgent.push(1);
-    srand(0);   //rand() % 3 + 1, rand() % 15 + 1, rand() % 30 + 1, rand() % 10 + 5, rand() % 12 + 6, rand() % 20 + 5
+    fAgent.push(1);
+    bAgent.push(1);
+    eAgent.push(1);
+    srand(0); 
 
-    //start clock
-    while (clock % 720 != 0)
+    auto start = chrono::steady_clock::now();
+    while (chrono::minutes(start).count() % 720 != 0)
     {
-        if (clock % 10 == 0)    //print every 10 minutes 
+        if (chrono::minutes(start).count() % 10 == 0)    //print every 10 minutes 
         {
-            cout << "First Class Line: " << firstPass.size() << endl;
-            cout << "Business Class Line: " << businessPass.size() << endl;
-            cout << "Economy Class Line: " << economyPass.size() << endl;
+            cout << "First Class Line: " << fPass.size() << endl;
+            cout << "Business Class Line: " << bPass.size() << endl;
+            cout << "Economy Class Line: " << ePass.size() << endl;
             periodicPrint(first, fAssist);
             periodicPrint(business, bAssist);
             periodicPrint(economy, eAssist);
@@ -74,60 +75,91 @@ int main ()
         frand = rand() % 30 + 1;
         brand = rand() % 15 + 1;
         erand = rand() % 3 + 1;
-        if (clock % frand == 0)
+        if (chrono::minutes(start).count() % frand == 0)
         {
-            firstPass.push(1);
+            fPass.push(1);
             fTotal++;
-            firstMax = maxSize(firstPass.size(), firstMax);
+            fMax = maxSize(fPass.size(), fMax);
         }
-        if (clock % brand == 0)
+        if (chrono::minutes(start).count() % brand == 0)
         {
-            businessPass.push(1);
+            bPass.push(1);
             bTotal++;
-            businessMax = maxSize(businessPass.size(), businessMax);
+            bMax = maxSize(bPass.size(), bMax);
         }
-        if (clock % erand == 0)
+        if (chrono::minutes(start).count() % erand == 0)
         {
-            economyPass.push(1);
+            ePass.push(1);
             eTotal++;
-            economyMax = maxSize(economyPass.size(), economyMax);
+            eMax = maxSize(ePass.size(), eMax);
         }
         //service times
         fservice = rand() % 15 + 10;
+        fwait += fservice;
         bservice = rand() % 12 + 6;
+        bwait += bservice;
         eservice = rand() % 20 + 5;
-        if (clock % fservice == 0)
+        ewait += eservice;
+        if (fAgent.size() == 1)
         {
-            firstPass.pop();
+            if (chrono::minutes(start).count() % fservice == 0)
+            {
+                fPass.pop();
+            }
         }
-        if (clock % bservice == 0)
+        if (fAgent.size() > 1)
         {
-            businessPass.pop();
+            if (chrono::minutes(start).count() % (fservice / 2) == 0)
+            {
+                fPass.pop();
+            }
         }
-        if (clock % eservice == 0)
+        if (bAgent.size() == 1)
         {
-            economyPass.pop();
+            if (chrono::minutes(start).count() % bservice == 0)
+            {
+                bPass.pop();
+            }
+        }
+        if (bAgent.size() > 1)
+        {
+            if (chrono::minutes(start).count() % (bservice / 2) == 0)
+            {
+                bPass.pop();
+            }
+        }
+        if (eAgent.size() == 1)
+        {
+            if (chrono::minutes(start).count() % eservice == 0)
+            {
+                ePass.pop();
+            }
+        }
+        if (eAgent.size() > 1)
+        {
+            if (chrono::minutes(start).count() % (eservice / 2) == 0)
+            {
+                ePass.pop();
+            }
         }
 
         //move agents according to rules 
-        if (firstPass.size() == 0 && businessClass.size() > 0)
+        if (fPass.size() == 0 && bPass.size() > 0)
         {
-            if (firstAgent.size() == 0)
+            if (fAgent.size() == 0)
             {
-                businessAgent.push(1);
-                //change processing times
+                bAgent.push(1);
             }
-            if (firstAgent.size() > 0)
+            if (fAgent.size() > 0)
             {
-                firstAgent.pop();
-                businessAgent.push(1);
-                //change processing time
+                fAgent.pop();
+                bAgent.push(1);
             }
-            if (economyPass.size() == 0)
+            if (ePass.size() == 0)
             {
                 eAssist = false;
             }
-            if (economyPass.size() > 0)
+            if (ePass.size() > 0)
             {
                 eAssist = true;
             }
@@ -135,86 +167,78 @@ int main ()
             bAssist = true;
 
         }
-        if (firstPass.size() == 0 && businessPass.size() == 0)
+        if (fPass.size() == 0 && bPass.size() == 0)
         {
-            if (firstAgent.size() == 0)
+            if (fAgent.size() == 0)
             {
-                businessAgent.pop();    //remove firstAgent from business line
-                economyAgent.push(1);
-                //change processing time
+                bAgent.pop();    //remove firstAgent from business line
+                eAgent.push(1);
 
             }
-            if (firstAgent.size() > 0)
+            if (fAgent.size() > 0)
             {
-                firstAgent.pop();
-                economyAgent.push(1);
-                //change processing time
+                fAgent.pop();
+                eAgent.push(1);
             }
             fAssist = true;
             eAssist = true;
             bAssist = false;
         }
-        if (businessPass.size() == 0 && firstPass.size() > 0)
+        if (bPass.size() == 0 && fPass.size() > 0)
         {
-            if (businessAgent.size() == 0)
+            if (bAgent.size() == 0)
             {
-                firstAgent.push(1);
-                //change processing time
+                fAgent.push(1);
             }
-            if (businessAgent.size() > 0)
+            if (bAgent.size() > 0)
             {
-                businessAgent.pop();
-                firstAgent.push(1);
-                //change processing time
+                bAgent.pop();
+                fAgent.push(1);
             }
-            if (economyPass.size() == 0)
+            if (ePass.size() == 0)
             {
                 eAssist = false;
             }
-            if (economyPass.size() > 0)
+            if (ePass.size() > 0)
             {
                 eAssist = true;
             }
             fAssist = true;
             bAssist = true;
         }
-        if (businessPass.size() == 0 && firstPass.size() == 0 && economyPass.size > 0)
+        if (bPass.size() == 0 && fPass.size() == 0 && ePass.size() > 0)
         {
-            if (businessAgent.size > 0)
+            if (bAgent.size() > 0)
             {
-                businessAgent.pop();
-                economyAgent.push(1);
-                //change processing time
+                bAgent.pop();
+                eAgent.push(1);
             }
-            if (businessAgent.size() == 0 && firstAgent.size() > 0)
+            if (bAgent.size() == 0 && fAgent.size() > 0)
             {
-                firstPass.pop();
-                economyAgent.push(1);
-                //change processing time
+                fPass.pop();
+                eAgent.push(1);
             }
             fAssist = false;
             bAssist = true;
             eAssist = true;
 
         }
-        if (economyPass.size() == 0 && firstPass.size() > 0)
+        if (ePass.size() == 0 && fPass.size() > 0)
         {
-            if (economyAgent.size() > 0)
+            if (eAgent.size() > 0)
             {
-                economyAgent.pop();
-                firstAgent.push(1);
-                //change processing time
+                eAgent.pop();
+                fAgent.push(1);
             }
-            if (economyAgent.size() == 0)
+            if (eAgent.size() == 0)
             {
-                firstAgent.push(1);
-                //change processing time
+                fAgent.push(1);
             }
-            if (businessPass.size() == 0)
+            if (bPass.size() == 0)
             {
                 bAssist = false;
             }
-            if (businessPass.size() > 0)
+            if (bPass.size() > 0)
             {
                 bAssist = true;
             }
@@ -222,110 +246,111 @@ int main ()
             fAssist = true;
 
         }
-        if (economyPass.size() == 0 && firstPass.size() == 0 && businessPass.size() > 0)
+        if (ePass.size() == 0 && fPass.size() == 0 && bPass.size() > 0)
         {
-            if (economyAgent.size() > 0)
+            if (eAgent.size() > 0)
             {
-                economyAgent.pop();
-                businessAgent.push(1);
+                eAgent.pop();
+                bAgent.push(1);
             }
-            if (economyAgent.size() == 0 && firstAgent.size() == 2)
+            if (eAgent.size() == 0 && fAgent.size() == 2)
             {
-                firstAgent.pop();
-                businessAgent.push(1);
-                //change processing time
+                fAgent.pop();
+                bAgent.push(1);
             }
             eAssist = true;
             bAssist = true;
             fAssist = false; 
         }
-        if (firstPass.size() == 0 && businessPass.size() == 0 && economyPass.size() == 0)
+        if (fPass.size() == 0 && bPass.size() == 0 && ePass.size() == 0)
         {
             fAssist = false; 
             bAssist = false;
             eAssist = false; 
-            if (firstAgent.size() == 0)
+            if (fAgent.size() == 0)
             {
-                firstAgent.push(1);
+                fAgent.push(1);
             }
-            if (firstAgent.size() > 1)
+            if (fAgent.size() > 1)
             {
-                while (firstAgent.size() != 1)
+                while (fAgent.size() != 1)
                 {
-                    firstAgent.pop();
+                    fAgent.pop();
                 }
             }
-            if (businessAgent.size() == 0)
+            if (bAgent.size() == 0)
             {
-                businessAgent.push(1);
+                bAgent.push(1);
             }
-            if (businessAgent.size() > 1)
+            if (bAgent.size() > 1)
             {
-                while (businessAgent.size() != 1)
+                while (bAgent.size() != 1)
                 {
-                    businessAgent.pop();
+                    bAgent.pop();
                 }
             }
-            if (economyAgent.size() == 0)
+            if (eAgent.size() == 0)
             {
-                economyAgent.push(1);
+                eAgent.push(1);
             }
-            if (economyAgent.size() > 1)
+            if (eAgent.size() > 1)
             {
-                while (economyAgent.size() != 1)
+                while (eAgent.size() != 1)
                 {
-                    economyAgent.pop();
+                    eAgent.pop();
                 }
             }
         }
-        if (firstPass.size() > 0 && businessPass.size > 0 && economyPass.size() > 0)
+        if (fPass.size() > 0 && bPass.size() > 0 && ePass.size() > 0)
         {
             fAssist = true;
             bAssist = true;
             eAssist = true;
-                        if (firstAgent.size() == 0)
+                        if (fAgent.size() == 0)
             {
-                firstAgent.push(1);
+                fAgent.push(1);
             }
-            if (firstAgent.size() > 1)
+            if (fAgent.size() > 1)
             {
-                while (firstAgent.size() != 1)
+                while (fAgent.size() != 1)
                 {
-                    firstAgent.pop();
+                    fAgent.pop();
                 }
             }
-            if (businessAgent.size() == 0)
+            if (bAgent.size() == 0)
             {
-                businessAgent.push(1);
+                bAgent.push(1);
             }
-            if (businessAgent.size() > 1)
+            if (bAgent.size() > 1)
             {
-                while (businessAgent.size() != 1)
+                while (bAgent.size() != 1)
                 {
-                    businessAgent.pop();
+                    bAgent.pop();
                 }
             }
-            if (economyAgent.size() == 0)
+            if (eAgent.size() == 0)
             {
-                economyAgent.push(1);
+                eAgent.push(1);
             }
-            if (economyAgent.size() > 1)
+            if (eAgent.size() > 1)
             {
-                while (economyAgent.size() != 1)
+                while (eAgent.size() != 1)
                 {
-                    economyAgent.pop();
+                    eAgent.pop();
                 }
             }
         }
 
     }
 
-    //compute here? 
+    fAverage = fwait / fTotal;
+    bAverage = bwait / bTotal;
+    eAverage = ewait / eTotal;
 
     cout << "Class:\tAverage Line Length:\tMax Line Length:\tAverage Wait Time:\tAverage Service Time:\n";
-    cout << "First Class:\t" << firstAverage << "\t" << firstMax << "\t" << //wait times here
-    cout << "Business Class:\t" << businessAverage << "\t" << businessMax << "\t" << //wait times here 
-    cout << "Economy Class:\t" << economyAverage << "\t" << economyMax << "\t" << //wait times here
+    cout << "First Class:\t" << fAverage << "\t" << fMax << "\t" << fAverage << "\t" << fAverage << endl;
+    cout << "Business Class:\t" << bAverage << "\t" << bMax << "\t" << bAverage << "\t" << bAverage << endl;
+    cout << "Economy Class:\t" << eAverage << "\t" << eMax << "\t" << eAverage << "\t" << eAverage << endl;
 
     return 0;
 }
