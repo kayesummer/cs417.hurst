@@ -43,6 +43,12 @@ int main ()
     auto fTotal = 0;
     auto bTotal = 0;
     auto eTotal = 0;
+    auto frand = 0;
+    auto brand = 0;
+    auto erand = 0;
+    auto fservice = 0;
+    auto bservice = 0;
+    auto eservice = 0;
 
 
     firstAgent.push(1);
@@ -63,6 +69,44 @@ int main ()
             periodicPrint(economy, eAssist);
 
             cout << endl;
+        }
+        //customer arrival rates
+        frand = rand() % 30 + 1;
+        brand = rand() % 15 + 1;
+        erand = rand() % 3 + 1;
+        if (clock % frand == 0)
+        {
+            firstPass.push(1);
+            fTotal++;
+            firstMax = maxSize(firstPass.size(), firstMax);
+        }
+        if (clock % brand == 0)
+        {
+            businessPass.push(1);
+            bTotal++;
+            businessMax = maxSize(businessPass.size(), businessMax);
+        }
+        if (clock % erand == 0)
+        {
+            economyPass.push(1);
+            eTotal++;
+            economyMax = maxSize(economyPass.size(), economyMax);
+        }
+        //service times
+        fservice = rand() % 15 + 10;
+        bservice = rand() % 12 + 6;
+        eservice = rand() % 20 + 5;
+        if (clock % fservice == 0)
+        {
+            firstPass.pop();
+        }
+        if (clock % bservice == 0)
+        {
+            businessPass.pop();
+        }
+        if (clock % eservice == 0)
+        {
+            economyPass.pop();
         }
 
         //move agents according to rules 
