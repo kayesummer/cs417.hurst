@@ -7,9 +7,6 @@
 #include <iostream> 
 #include <chrono> 
 #include <algorithm> 
-#include <utility> 
-#include <vector> 
-#include <string> 
 #include <queue>
 using namespace std; 
 
@@ -38,10 +35,10 @@ int main ()
     economyAgent.push(1);
     srand(0);   //rand() % 3 + 1, rand() % 15 + 1, rand() % 30 + 1, rand() % 10 + 5, rand() % 12 + 6, rand() % 20 + 5
 
-
+    //start clock
     while (clock % 720 != 0)
     {
-        if (clock % 10 == 0)
+        if (clock % 10 == 0)    //print every 10 minutes 
         {
             cout << "First Class Line: " << firstPass.size() << endl;
             cout << "Business Class Line: " << businessPass.size() << endl;
@@ -49,6 +46,71 @@ int main ()
 
             cout << endl;
         }
+
+        if (firstPass.size() == 0 && businessClass.size() != 0)
+        {
+            firstAgent.pop();
+            businessAgent.push(1);
+            //change processing time
+        }
+        if (firstPass.size() == 0 && businessPass.size() == 0)
+        {
+            if (firstAgent.size() == 0)
+            {
+                businessAgent.pop();
+                economyAgent.push(1);
+                //change processing time
+
+            }
+            if (firstAgent.size() > 0)
+            {
+                firstAgent.pop();
+                economyAgent.push(1);
+                //change processing time
+            }
+        }
+        if (businessPass.size() == 0 && firstPass.size() > 0)
+        {
+            businessAgent.pop();
+            firstAgent.push(1);
+            //change processing time
+        }
+        if (businessPass.size() == 0 && firstPass.size() == 0 && economyPass.size > 0)
+        {
+            businessAgent.pop();
+            economyAgent.push(1);
+            //change processing time
+        }
+        if (economyPass.size() == 0 && firstPass.size() > 0)
+        {
+            if (economyAgent.size() > 0)
+            {
+                economyAgent.pop();
+                firstAgent.push(1);
+                //change processing time
+            }
+            if (economyAgent.size() == 0)
+            {
+                firstAgent.push(1);
+                //change processing time
+            }
+
+        }
+        if (economyPass.size() == 0 && firstPass.size() == 0 && businessPass.size() > 0)
+        {
+            if (economyAgent.size() > 0)
+            {
+                economyAgent.pop();
+                businessAgent.push(1);
+            }
+            if (economyAgent.size() == 0 && firstAgent.size() == 2)
+            {
+                firstAgent.pop();
+                businessAgent.push(1);
+                //change processing time
+            }
+        }
+
     }
 
     //compute here? 
