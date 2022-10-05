@@ -32,6 +32,9 @@ int main ()
     auto firstAverage = 0;
     auto businessAverage = 0;
     auto economyAverage = 0;
+    auto fAssist = false;
+    auto bAssist = false;
+    auto eAssist = false;
 
     firstAgent.push(1);
     businessAgent.push(1);
@@ -46,10 +49,15 @@ int main ()
             cout << "First Class Line: " << firstPass.size() << endl;
             cout << "Business Class Line: " << businessPass.size() << endl;
             cout << "Economy Class Line: " << economyPass.size() << endl;
+            if (firstPass.size() > 0 && businessPass.size() > 0 && economyPass.size() > 0)
+            {
+                cout << "All agents are assisting customers.\n";
+            }
 
             cout << endl;
         }
 
+        //move agents according to rules 
         if (firstPass.size() == 0 && businessClass.size() > 0)
         {
             if (firstAgent.size() == 0)
@@ -63,6 +71,16 @@ int main ()
                 businessAgent.push(1);
                 //change processing time
             }
+            if (economyPass.size() == 0)
+            {
+                eAssist = false;
+            }
+            if (economyPass.size() > 0)
+            {
+                eAssist = true;
+            }
+            fAssist = true;
+            bAssist = true;
 
         }
         if (firstPass.size() == 0 && businessPass.size() == 0)
@@ -80,6 +98,9 @@ int main ()
                 economyAgent.push(1);
                 //change processing time
             }
+            fAssist = true;
+            eAssist = true;
+            bAssist = false;
         }
         if (businessPass.size() == 0 && firstPass.size() > 0)
         {
@@ -94,14 +115,35 @@ int main ()
                 firstAgent.push(1);
                 //change processing time
             }
-
-            //change processing time
+            if (economyPass.size() == 0)
+            {
+                eAssist = false;
+            }
+            if (economyPass.size() > 0)
+            {
+                eAssist = true;
+            }
+            fAssist = true;
+            bAssist = true;
         }
         if (businessPass.size() == 0 && firstPass.size() == 0 && economyPass.size > 0)
         {
-            businessAgent.pop();
-            economyAgent.push(1);
-            //change processing time
+            if (businessAgent.size > 0)
+            {
+                businessAgent.pop();
+                economyAgent.push(1);
+                //change processing time
+            }
+            if (businessAgent.size() == 0 && firstAgent.size() > 0)
+            {
+                firstPass.pop();
+                economyAgent.push(1);
+                //change processing time
+            }
+            fAssist = false;
+            bAssist = true;
+            eAssist = true;
+
         }
         if (economyPass.size() == 0 && firstPass.size() > 0)
         {
@@ -116,6 +158,16 @@ int main ()
                 firstAgent.push(1);
                 //change processing time
             }
+            if (businessPass.size() == 0)
+            {
+                bAssist = false;
+            }
+            if (businessPass.size() > 0)
+            {
+                bAssist = true;
+            }
+            eAssist = true;
+            fAssist = true;
 
         }
         if (economyPass.size() == 0 && firstPass.size() == 0 && businessPass.size() > 0)
@@ -131,8 +183,88 @@ int main ()
                 businessAgent.push(1);
                 //change processing time
             }
+            eAssist = true;
+            bAssist = true;
+            fAssist = false; 
         }
-
+        if (firstPass.size() == 0 && businessPass.size() == 0 && economyPass.size() == 0)
+        {
+            fAssist = false; 
+            bAssist = false;
+            eAssist = false; 
+            if (firstAgent.size() == 0)
+            {
+                firstAgent.push(1);
+            }
+            if (firstAgent.size() > 1)
+            {
+                while (firstAgent.size() != 1)
+                {
+                    firstAgent.pop();
+                }
+            }
+            if (businessAgent.size() == 0)
+            {
+                businessAgent.push(1);
+            }
+            if (businessAgent.size() > 1)
+            {
+                while (businessAgent.size() != 1)
+                {
+                    businessAgent.pop();
+                }
+            }
+            if (economyAgent.size() == 0)
+            {
+                economyAgent.push(1);
+            }
+            if (economyAgent.size() > 1)
+            {
+                while (economyAgent.size() != 1)
+                {
+                    economyAgent.pop();
+                }
+            }
+        }
+        if (firstPass.size() > 0 && businessPass.size > 0 && economyPass.size() > 0)
+        {
+            fAssist = true;
+            bAssist = true;
+            eAssist = true;
+                        if (firstAgent.size() == 0)
+            {
+                firstAgent.push(1);
+            }
+            if (firstAgent.size() > 1)
+            {
+                while (firstAgent.size() != 1)
+                {
+                    firstAgent.pop();
+                }
+            }
+            if (businessAgent.size() == 0)
+            {
+                businessAgent.push(1);
+            }
+            if (businessAgent.size() > 1)
+            {
+                while (businessAgent.size() != 1)
+                {
+                    businessAgent.pop();
+                }
+            }
+            if (economyAgent.size() == 0)
+            {
+                economyAgent.push(1);
+            }
+            if (economyAgent.size() > 1)
+            {
+                while (economyAgent.size() != 1)
+                {
+                    economyAgent.pop();
+                }
+            }
+        }
 
     }
 
