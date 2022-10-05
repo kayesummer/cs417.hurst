@@ -50,6 +50,7 @@ int main ()
     auto fwait = 0;
     auto bwait = 0;
     auto ewait = 0;
+    auto clock = 0;
 
 
     fAgent.push(1);
@@ -57,10 +58,9 @@ int main ()
     eAgent.push(1);
     srand(0); 
 
-    auto start = chrono::steady_clock::now();
-    while (chrono::minutes(start).count() % 720 != 0)
+    while (clock != 0)
     {
-        if (chrono::minutes(start).count() % 10 == 0)    //print every 10 minutes 
+        if (clock % 10 == 0)    //print every 10 minutes 
         {
             cout << "First Class Line: " << fPass.size() << endl;
             cout << "Business Class Line: " << bPass.size() << endl;
@@ -75,19 +75,19 @@ int main ()
         frand = rand() % 30 + 1;
         brand = rand() % 15 + 1;
         erand = rand() % 3 + 1;
-        if (chrono::minutes(start).count() % frand == 0)
+        if (clock % frand == 0)
         {
             fPass.push(1);
             fTotal++;
             fMax = maxSize(fPass.size(), fMax);
         }
-        if (chrono::minutes(start).count() % brand == 0)
+        if (clock % brand == 0)
         {
             bPass.push(1);
             bTotal++;
             bMax = maxSize(bPass.size(), bMax);
         }
-        if (chrono::minutes(start).count() % erand == 0)
+        if (clock % erand == 0)
         {
             ePass.push(1);
             eTotal++;
@@ -102,42 +102,42 @@ int main ()
         ewait += eservice;
         if (fAgent.size() == 1)
         {
-            if (chrono::minutes(start).count() % fservice == 0)
+            if (clock % fservice == 0)
             {
                 fPass.pop();
             }
         }
         if (fAgent.size() > 1)
         {
-            if (chrono::minutes(start).count() % (fservice / 2) == 0)
+            if (clock % (fservice / 2) == 0)
             {
                 fPass.pop();
             }
         }
         if (bAgent.size() == 1)
         {
-            if (chrono::minutes(start).count() % bservice == 0)
+            if (clock % bservice == 0)
             {
                 bPass.pop();
             }
         }
         if (bAgent.size() > 1)
         {
-            if (chrono::minutes(start).count() % (bservice / 2) == 0)
+            if (clock % (bservice / 2) == 0)
             {
                 bPass.pop();
             }
         }
         if (eAgent.size() == 1)
         {
-            if (chrono::minutes(start).count() % eservice == 0)
+            if (clock % eservice == 0)
             {
                 ePass.pop();
             }
         }
         if (eAgent.size() > 1)
         {
-            if (chrono::minutes(start).count() % (eservice / 2) == 0)
+            if (clock % (eservice / 2) == 0)
             {
                 ePass.pop();
             }
@@ -340,6 +340,7 @@ int main ()
                 }
             }
         }
+        clock++;
 
     }
 
