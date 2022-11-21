@@ -17,6 +17,20 @@ class Item:
         int ID;
         std::string departmentID = "";
         double price;
+
+        //constructors/destructors
+        Item()
+        {
+
+        }
+        Item()  //copy
+        {
+
+        }
+        ~Item()
+        {
+
+        }
 };
 
 class ItemList:
@@ -24,6 +38,20 @@ class ItemList:
     public: 
         //attributes
         std::list<Item> *items;
+
+        //constructors/destructors
+        ItemList()
+        {
+
+        }
+        ItemList()  //copy
+        {
+
+        }
+        ~ItemList()
+        {
+
+        }
 
         //methods
         void addItem(Item i)
@@ -43,18 +71,70 @@ class ItemList:
 
 class ShoppingCart : public ItemList
 {
+    public:
+        //attributes
+
+
+        //constructors/destructors
+        ShoppingCart()
+        {
+
+        }
+        ShoppingCart()  //copy
+        {
+
+        }
+        ~ShoppingCart()
+        {
+
+        }
 
 };
 
 class WishList : public ItemList
 {
+    public:    
+        //attributes
 
+
+        //constructors/destructors
+        WishList()
+        {
+
+        }
+        WishList()  //copy
+        {
+
+        }
+        ~WishList()
+        {
+
+        }
+        
 };
 
 class Customer:
 {
     public: 
-    
+        //attributes 
+        std::string name = "";
+        ShoppingCart *cart;
+        WishList *wList;
+        Department *dep;
+
+        //constructors/destructors
+        Customer()
+        {
+
+        }
+        Customer()  //copy
+        {
+
+        }
+        ~Customer()
+        {
+
+        }
 };
 
 class Department:
@@ -66,6 +146,20 @@ class Department:
         std::list<Customer> *customers;
         //observers
         std::string departmentID = "";
+
+        //constructors/destructors
+        Department()
+        {
+
+        }
+        Department()    //copy
+        {
+
+        }
+        ~Department()
+        {
+
+        }
 
         //methods 
         void enter ()
@@ -91,43 +185,58 @@ class Department:
 
 };
 
-class Store:
+//model for the store
+class Store:   
 {
     public: 
-    //attributes 
-    std::string name = "";
-    std::list<Department> *departments;
-    std::list<Customer> *customers;
+        //attributes 
+        std::string name = "";
+        std::list<Department> *departments;
+        std::list<Customer> *customers;
 
-    //methods
-    void enter ()
-    {
+        //constructors/destructors
+        Store()
+        {
 
-    }
-    void exit ()
-    {
+        }
+        Store()     //copy
+        {
 
-    }
-    void getCart ()
-    {
+        }
+        ~Store()
+        {
 
-    }
-    void wishList ()
-    {
+        }
 
-    }
-    void customers ()
-    {
+        //methods
+        void enter ()
+        {
 
-    }
-    void departments () 
-    {
+        }
+        void exit ()
+        {
 
-    }
-    void addDepartment ()
-    {
+        }
+        void getCart ()
+        {
+
+        }
+        void wishList ()
+        {
+
+        }
+        void customers ()
+        {
+
+        }
+        void departments () 
+        {
+
+        }
+        void addDepartment ()
+        {
+
+        }
         
-    }
-    
 };
 
