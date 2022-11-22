@@ -33,7 +33,12 @@ class Item:
         ~Item(){};
 };
 
-class ItemList:
+class Observer: 
+{ 
+    virtual void update() = 0;
+};
+
+class ItemList : public Observer
 {
     public: 
         //attributes
@@ -44,13 +49,21 @@ class ItemList:
         ~ItemList(){};
 
         //methods
+        void update(Item i, string state)
+        {
+            cout << i.name << " has been " << state << endl;
+        }
         void addItem(Item i)    //add item to list
         {
+            string state = "added";
             items.pushback(i);
+            update(i, state);
         }
         void removeItem(Item i) //remove item from list
         {
+            string state = "removed";
             items.remove(i);
+            update(i, state);
         }
         Item items()    //return list of all items
         {
@@ -59,7 +72,7 @@ class ItemList:
     
 };
 
-class ShoppingCart : public ItemList
+class ShoppingCart : public ItemList 
 {
     public:
         //attributes
@@ -85,7 +98,7 @@ class ShoppingCart : public ItemList
 
 };
 
-class WishList : public ItemList
+class WishList : public ItemList 
 {
     public:    
         //attributes
@@ -182,9 +195,10 @@ class Department : public Factory
         {
             return items;
         }
-        void addObserver () //Add a new observer to the department
+        void addObserver (Customer c) //Add a new observer to the department
         {
-
+            list<Customer> *observerL;
+            observerL.pushback(c);
         }
 
 };
@@ -249,21 +263,16 @@ class Store : public Factory
         {
             return departments;
         }
-        void addDepartment ()   //Adds a new department to the store
-        {                       // haha
-            ItemList* itemL;
+        void addDepartment (ItemList* iList)   //Adds a new department to the store
+        {            
             string n = "";
-            int total = 0;
             rand(0);
+            int depID = rand() % 1000;
 
             cout << "Department Name: \n";
             cin >> n;
-            cout << "How many items in department?\n";
-            cin >> total;
-            for (int count = 0; count < total; count++)
-            {
-                itemL.addItem(Item i);
-            }
+
+            Department* newDep = new Department(n, iList, depID);
 
         }
         
