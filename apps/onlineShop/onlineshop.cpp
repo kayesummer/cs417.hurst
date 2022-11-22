@@ -49,7 +49,7 @@ class ItemList : public Observer
         ~ItemList(){};
 
         //methods
-        void update(Item i, string state)
+        void update(Item i, string state)   //update override 
         {
             cout << i.name << " has been " << state << endl;
         }
@@ -155,6 +155,7 @@ class Customer:
             wList = w;
             dep = d;
         }
+        ~Customer(){};
 
 };
 
