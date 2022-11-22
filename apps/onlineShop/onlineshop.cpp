@@ -23,7 +23,6 @@ class Item:
         double price;
 
         //constructors/destructors
-        Item(){};
         Item(string n, int uID, int d, double p)  //copy
         {
             name = n;
@@ -124,17 +123,26 @@ class Customer:
     private:
         Factory *factory;
     public: 
+        //attributes 
+        string name = "";
+        ShoppingCart *cart;
+        WishList *wList;
+        Department dep;
+
         //constructor
         Customer(Factory *f) 
         {
             factory = f;
         }
 
-        //attributes 
-        string name = "";
-        ShoppingCart *cart;
-        WishList *wList;
-        Department *dep;
+        Customer(string n, ShoppingCart* c, WishList* w, Department d)
+        {
+            name = n; 
+            cart = c;
+            wList = w;
+            dep = d;
+        }
+
 };
 
 class Department : public Factory
@@ -186,7 +194,7 @@ class Store : public Factory
 {
     private:
         // Here will be the instance stored
-        static Store* instance;
+        static Store* instance; //singleton
 
         // Private constructor to prevent instancing
         Store();
@@ -195,8 +203,8 @@ class Store : public Factory
         //attributes 
         string name = "";
         list<Department> *departments;
-        list<Customer> *customers;
-        static Store* getInstance();    //static access method
+        list<Customer> customers;
+        static Store* getInstance();    //static access method, singleton
 
         //constructors/destructors
         Store(){};
@@ -242,12 +250,12 @@ class Store : public Factory
             return departments;
         }
         void addDepartment ()   //Adds a new department to the store
-        {
+        {                       // haha
             ItemList* itemL;
             string n = "";
             int total = 0;
             rand(0);
-            int id = rand() % 1000;
+
             cout << "Department Name: \n";
             cin >> n;
             cout << "How many items in department?\n";
@@ -364,6 +372,28 @@ int main()
     ConcreteFactory2 *s1 = new ConcreteFactory2();
     ClientCode(*s1);
     delete s1;
+
+    rand(0);
+    int bookDepID = rand() % 1000;
+    int videoDepID = rand() % 1000;
+    int softwareDepID = rand() % 1000;
+    int musicDepID = rand() % 1000;
+
+    Item *book = new Item("book", rand() % 1000, bookDepID, 10.50);
+    ItemList books;
+    books.addItem(book);
+
+    Item *cd = new Item("cd", rand() % 1000, musicDepID, 6.70);
+    ItemList musics;
+    musics.addItem(cd);
+
+    Item *movie = new Item("movie", rand() % 1000, videoDepID, 8.50);
+    ItemList videos;
+    videos.addItem(movie);
+
+    Item *word = new Item("word", rand() % 1000, softwareDepID, 100.50);
+    ItemList softwares; 
+    softwares.addItem(word);
 
     return 0;
 }
