@@ -1,106 +1,101 @@
 //
-// File:    adjacencylist.h
-// Author: Adam Lewis
-// **Kaylee Hurst does not own the rights**
-// Copyright (c) 2014 Adam Lewis. All rights reserved
-// Purpose:
-// Implement the graph ADT using an adjacency list
+//  AdjListGraph.h
+//  GraphTest
+//
+//  Created by Adam Lewis on 1/27/14.
+//  Copyright (c) 2014 Adam Lewis. All rights reserved.
 //
 
-#pragma once 
-#include <vector>  
+#pragma once
+#include "Graph.h"
 #include <map>
+#include <vector>
+#include <list>
 #include <deque>
-#include <algorithm> 
-#include <list>     
-#include "graph.h"      //to inherit from the graph class
+#include <algorithm>
+using namespace std;
 
-template <typename ValueType>
-class AdjacencyList : public Graph<ValueType>
-{
-    private: 
-        using Edges = list<std::pair<ValueType,ValueType>>;
-        map<ValueType,Edges> vertexMap;
+template <class N>
+class AdjListGraph: public Graph<N>  {
+private:
+    using Edges = list<pair<N, N>>;
+    map<N,Edges> vertexMap;
+public:
+    // Default constuctor, create empty
+    AdjListGraph() : Graph<N>() { };
 
-    public: 
-    //constructors/destructor
-    AdjacencyList() : Graph<ValueType>() {};
-
-    AdjacencyList(const AdjacencyList& other) : Graph<ValueType> ()
+    
+    // Get the vertex map from the Graph we're copying
+    AdjListGraph(const AdjListGraph& other) : Graph<N>()
     {
         vertexMap = other->vertexMap;
     }
-
-    //Add the nodes in the list to graph
-    AdjacencyList(vector<ValueType> newNodes, vector<pair<ValueType,ValueType>> newEdges) : Graph<ValueType> (newNodes, newEdges)
-    {
-        for (auto it = newNodes.begin(); it < newNodes.end(); ++it)
-        {
-            ValueType node = *it; 
-            vertexMap[node].pushback(newEdges);
-        }
-    }
-
-    ~AdjacencyList() {};
-
-    //overload assignment operator
-    AdjacencyList& operator= (const AdjacencyList &source)
+    
+    // Don't forget to overload the assignment operator
+    AdjListGraph& operator= (const AdjListGraph &source)
     {
         vertexMap = source->vertexMap;
         return *this;
     }
     
-    // Assume that the class is templated by the type "ValueType"
-    virtual bool adjacent(ValueType x, ValueType y) // is there a node from x to y
+    // Add the nodes in the list to graph
+    AdjListGraph(vector<N> newNodes, vector<pair<N,N>> newEdges) :
+        Graph<N>(newNodes, newEdges)
     {
+        for (auto it = newNodes.begin();
+             it < newNodes.end();
+             ++it)
+        {
+            N node = *it;
+            vertexMap[node].push_back(newEdges);
+        }
+    }
+    
+    
+    // Clean up behind ourselves
+    ~AdjListGraph() { }
+    
+    virtual bool adjacent(N x, N y){
         Edges edges = vertexMap.at(x);
-        std::pair<ValueType,ValueType> *searchEdge = new pair<ValueType,ValueType>(x,y);
+        pair<N,N> *searchEdge = new pair<N,N>(x,y);
         typename Edges::const_iterator begin = edges.begin();
         typename Edges::const_iterator end = edges.end();
-        auto pos = std::find_if(begin, end, [&](std::pair<ValueType, ValueType> const &b)
-        {
-            return b.first == searchEdge->first;
-        }
-        );
+        auto pos = std::find_if(begin,end,
+                                [&](pair<N,N> const &b) {
+                                    return b.first == searchEdge->first;
+                                });
+      
         return (pos != end);
     }
 
-    virtual vector<ValueType> neighbors(ValueType x) // Return a vector of neighbor nodes
-    {
-        std::vector<ValueType> *nodes = new vector<ValueType>();
+    virtual vector<N> neighbors(N x) {
+        vector<N> *nodes = new vector<N>();
         Edges edges = vertexMap.at(x);
-        for (typename Edges :: const_iterator it = edges.begin(); it < edges.end(); ++it)
-        {
-            std::pair<ValueType,ValueType> e = *it;
-            nodes->push_back(e.first); 
+        for (typename Edges :: const_iterator it = edges.begin(); it != edges.end(); it++) {
+            pair<N,N> e = *it;
+            nodes->push_back(e.first);
         }
         return *nodes;
     }
 
-    virtual void addEdge(ValueType source, ValueType dest) //add an edge from source, to dest add dest if it isn't already in graph
-    {
-        std::pair<ValueType,ValueType> forwardEdge = std::make_pair(source,dest);
-        std::pair<ValueType,ValueType> backwardEdge = std::make_pair(dest,source);
-        vertexMap[source].push_back(forwardEdge);
-        vertexMap[dest].push_back(backwardEdge);
-    }
-
-    virtual void addNode(ValueType x) //Add x to graph
-    {
+    virtual void addNode(N node){
         Edges emptyEdgeList;
-        vertexMap[x] = emptyEdgeList;
+        vertexMap[node] = emptyEdgeList;
     }
+    
+    virtual void addEdge(N x, N y){
+        pair<N,N> forwardEdge = make_pair(x,y);
+        pair<N,N> backwardEdge = make_pair(y,x);
+        vertexMap[x].push_back(forwardEdge);
+        vertexMap[y].push_back(backwardEdge);
+    }
+    
+    virtual void deleteEdge(N x, N y){
+        pair<N,N> forwardEdge = make_pair(x,y);
+        pair<N,N> backwardEdge = make_pair(y,x);
+        vertexMap[x].remove(forwardEdge);
+        vertexMap[y].remove(backwardEdge);
+    }
+    
 
-    virtual void deleteEdge(ValueType source, ValueType dest)
-    {
-        std::pair<ValueType,ValueType> forwardEdge = std::make_pair(source,dest);
-        std::pair<ValueType,ValueType> backwardEdge = std::make_pair(dest,source);
-        vertexMap[source].remove(forwardEdge);
-        vertexMap[dest].remove(backwardEdge);
-    }
-
-    virtual void deleteNode(ValueType node)
-    {
-        vertexMap[node].remove();
-    }
 };
